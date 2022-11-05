@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+<!--   D3 is always loaded before dimple as dimple is built on top of D3/references D3 funcctions
+  here we are referencing the javascript files that are available on the web
+  if you do not have web access you will have to reference the files in your project sfile structure as we did in the first tutorial -->
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  
+    <script type="text/javascript">
+	
+	
+
+	
+      function draw(data) {
+      
+      /*
+        Start of D3.js setup code
+        similar to setup in first lab
+      */
+//Strict mode Converts some JavaScript silent errors to throw errors, can sometimes be made to run faster 
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
+          "use strict";
+          // Create margin variables, 
+          //https://bl.ocks.org/mbostock/3019563 margin conventions
+          var margin = 75,
+              width = 1400 - margin,
+              height = 600 - margin;
+
+debugger;
+
+         // then add svg element to page
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')//http://tutorials.jenkov.com/svg/g-element.html - "g" element explanation
+                .attr('class','chart');
+
+      /*
+        End of D3 code
+        Start of Dimple.js Chart construction code
+      */
+          var myChart = new dimple.chart(svg, data);
+          var x = myChart.addTimeAxis("x", "year");
+          x.dateParseFormat = "%Y";// details of date formatting - http://man7.org/linux/man-pages/man3/strftime.3.html
+		  x.tickFormat ="%Y"
+		  x.timeInterval = 4
+debugger;
+          var y = myChart.addMeasureAxis("y", "attendance");
+          var series = myChart.addSeries(null, dimple.plot.line);
+		  var series = myChart.addSeries(null, dimple.plot.scatter);
+          myChart.draw();
+
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.tsv("world_cup.tsv", draw);
+  </script>
+</body>
+</html>
